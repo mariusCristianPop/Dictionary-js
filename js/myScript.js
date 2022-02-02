@@ -15,7 +15,7 @@ function appendWord() {
 // search word trough list
 function searchWord() {
     getInputValue();
-    if (validateInput(secondInputField)) {
+    if (indexOf(secondInputField) != -1) {
         console.log("se gaseste in lista");    
     }
      else {
