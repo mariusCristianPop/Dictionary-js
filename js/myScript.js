@@ -1,49 +1,67 @@
 var myWords = [];
-var firstInputField;
-var secondInputField;
+var addWord;
+var searchWord;
 // append word to list
 function appendWord() {
     getInputValue();
-    if (validateInput(firstInputField)) {
-        myWords.push(firstInputField);
-    } else {
-        console.log("cuvantul exista sau nu este in formatul cerut");
+    if (validateInput(addWord)) {
+        myWords.push(addWord);
+        showMessage(`Word "${addWord}" added succesfully!`);
     }
-    console.log(myWords);
+    console.log(myWords); // left here on purpose for debugging reasons. 
+    clearInputValues();
 }
 
 // search word trough list
-function searchWord() {
+function searchForWord() {
     getInputValue();
-    if (indexOf(secondInputField) != -1) {
-        console.log("se gaseste in lista");    
+    if (myWords.includes(searchWord)) {
+        showMessage(` "${searchWord}" is in the list`);    
     }
      else {
-        console.log("nu se gaseste in lista");
+        showMessage(` "${searchWord}" is not in the list`); 
     }
+    clearInputValues();
 }
 
 function getInputValue() {
-    firstInputField = document.getElementById("userWordInput").value;
-    secondInputField = document.getElementById("userWordSearch").value;
-    clearInputValues();
+    addWord = document.getElementById("userWordInput").value;
+    searchWord = document.getElementById("userWordSearch").value;
 }
 
 function clearInputValues() {
     document.getElementById("userWordSearch").value = null;
     document.getElementById("userWordInput").value = null;
+
 }
 
 function validateInput(input) {
     var r = /\s+/;
     if(input.match(r)) {
-        console.log("gasit spatiu");
+        showMessage("The inserted word contains empty spaces. Enter a word without empty spaces!");
         return false;
     }
     var r = /\d+/;
     if (input.match(r)) {
-        console.log("gasit cifre");
+        showMessage("The inserted word contains numbers. Enter a word without numbers!");
+        return false;
+    }
+    if (myWords.includes(input)) {
+        showMessage(`The word "${input}" already exists!`);
+        return false;
+    }
+    if (input.length == 1) {
+        showMessage(`This "${input}" is a letter not a word!`);
         return false;
     }
     return true;
+}
+
+function showMessage(parameter) {
+    var paragraph = document.getElementById("userInputConfirmation");
+    paragraph.textContent += parameter;
+    setTimeout(hideElement, 2500) 
+    function hideElement() {
+        paragraph.textContent = "";
+    }
 }
